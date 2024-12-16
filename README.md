@@ -1,64 +1,120 @@
-# KurtModules-Blog
+# Laravel Blog
 
-I tried to extract a simple, reusable blog module to use on my projects.
-I used two external packages in total. For keeping the URL pretty on every possible page, I added [Eloquent Sluggable](https://github.com/cviebrock/eloquent-sluggable) and for displaying the content of a post I decided to use [Laravel Markdown](https://github.com/GrahamCampbell/Laravel-Markdown). This can of course be overwritten. 
+Laravel Blog is a package that provides a simple blog system for Laravel applications.
 
-The module includes the following models and each model has a default observer:
+## Features
 
-PS: Observers are currently not customizable. :(
+- Categories
+- Posts
+- Comments
+- Media Types (Text, Single Image, Multiple Image, Video)
+- Video Embedding (YouTube, Vimeo, DailyMotion)
+
+## External Requirements
+
+This package requires 2 external packages for its functionality.
+
+- [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)
+- [spatie/laravel-medialibrary](https://github.com/spatie/laravel-medialibrary)
+
+## External Suggestions
+
+You can use the following packages to enhance the functionality of the blog system.
+
+- [spatie/laravel-tags](https://github.com/spatie/laravel-tags)
+
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require ozankurt/laravel-blog
+```
+
+Publish the package assets:
+
+```bash
+php artisan vendor:publish --provider="Ozankurt\Blog\BlogServiceProvider"
+```
+
+Run the migrations:
+
+```bash
+php artisan migrate
+```
+
+## Usage
+
+Modify the `config/blog.php` configuration file to customize the package settings.
+
+```php
+return [
+
+    'database' => [
+        'connection' = env('DB_CONNECTION', 'mysql'),
+        'table_prefix' => 'blog_',
+    ],
+
+    'models' => [
+        'user' => App\Models\User::class,
+
+        /** If you want to use your own models, you can extend the package models. */
+        'category' => OzanKurt\Blog\Category::class,
+        'comment' => OzanKurt\Blog\Comment::class,
+        'post' => OzanKurt\Blog\Post::class,
+    ],
+
+    'media' => [
+        'disk' => 'public',
+    ],
+
+    'video_thumbnail_qualities' => [
+        /** Vimeo options: 'thumbnail_small', 'thumbnail_medium', 'thumbnail_large' */
+        'vimeo' => 'thumbnail_medium',
+        /** YouTube options: '0', '1', '2', '3', 'default', 'hqdefault', 'mqdefault', 'sddefault', 'maxresdefault' */
+        'youtube' => 'default',
+    ],
+
+    'caching' => [
+        'enabled' => false,
+        'duration' => 15,
+    ],
+];
+```
+
+## API
 
 #### Category
 
-| Methods       | Description   |
-| ------------- | ------------- |
-| posts() | Posts of the category. (hasMany) |
-| postsCount() | Posts count of the category. (hasOne) |
-| latestPost() | Latest post of the category. (hasOne)      |
-| scopePopular($descending = true) | Order the categories accoring to their popularities. (scope)      |
-
-#### Tag
-
-| Methods       | Description   |
-| ------------- | ------------- |
-| posts() | Posts of the tag. (belongsToMany) |
-| postsCount() | Posts count of the tag. (hasOne) |
-| latestPost() | Latest post of the tag. |
+| Methods       | Relationship                         |
+| ------------- |--------------------------------------|
+| posts() | HasMany     |
+| latestPost() | HasOne |
 
 #### Post
 
-Posts have a media type attribute so that the users can choose between a Text Post, Single Image Post, Multiple Image Post or Video Post. Videos support 3 different websites: YouTube, Vimeo, DailyMotion
+Posts have a `type_id` attribute so that the users can choose between:
+- Text Post
+- Single Image Post
+- Multiple Image Post
+- Video Post
 
-| Methods       | Description   |
-| ------------- | ------------- |
-| category() | Category of the post. (belongsTo) |
-| user() | User of the post. (belongsTo) |
-| comments() | Comments of the post. (hasMany)      |
-| commentsCount() | Comments count of the post. (hasOne) |
-| latestComment() | Latest comment of the post. |
-| tags() | Tags of the post. (belongsToMany) |
-| tagsCount() | Tag count of the post. (hasOne) |
-| scopePopular($descending = true) | Order the categories accoring to their popularities. (scope)      |
-| scopeInCategory($categoryId = true) | Filter the posts to a category. (scope)* |
-| scopeWithTags($tagIds = [], $and = false) | Filter the posts by their tags. (scope)* |
+Videos support 3 different providers:
 
-PS: * *This should be able to receive multiple ids sometime.*
+- YouTube
+- Vimeo
+- DailyMotion
+
+| Methods       | Relationship                        |
+| ------------- |-------------------------------------|
+| category() | BelongsTo   |
+| user() | BelongsTo       |
+| comments() | HasMany     |
+| latestComment() | HasOne |
 
 #### Comment
 
-| Methods       | Description   |
-| ------------- | ------------- |
-| post() | Post of the comment. (belongsTo) |
-| user() | User of the comment. (belongsTo) |
-| isApproved() | Check the approval state of the comment. |
-| approve($state = true) | Update the appvoval of the comment. |
-| disapprove() | Update the appvoval of the comment. |
-
-### Contribution guidelines
-
-Todo: Add contribution guidelines.
-
-### Who do I talk to?
-
-**Owner**: 
-
-* Ozan Kurt (<ozankurt2@gmail.com>)
+| Methods       | Relationship                    |
+| ------------- |---------------------------------|
+| post() | BelongsTo |
+| user() | BelongsTo |
