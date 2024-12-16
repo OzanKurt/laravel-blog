@@ -11,6 +11,7 @@ use OzanKurt\Blog\Enums\VideoType;
 use OzanKurt\Blog\Exceptions\InvalidVideoTypeException;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {

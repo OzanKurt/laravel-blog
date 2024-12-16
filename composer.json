@@ -12,10 +12,10 @@
     ],
     "require": {
         "spatie/laravel-sluggable": "^3.7",
-        "spatie/laravel-medialibrary": "^11.11",
+        "spatie/laravel-medialibrary": "^11.11"
     },
     "require-dev": {
-        "orchestra/testbench": "^9.8",
+        "orchestra/testbench": "^9.8"
     },
     "suggest": {
         "spatie/laravel-tags": "To tag posts."
