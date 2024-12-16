@@ -3,7 +3,7 @@
 return [
 
     'database' => [
-        'connection' = env('DB_CONNECTION', 'mysql'),
+        'connection' => env('DB_CONNECTION', 'mysql'),
         'table_prefix' => 'blog_',
     ],
 
