@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
+    public function getTable(): string
+    {
+        return config('blog.database.table_prefix') . 'comments';
+    }
+
     public function post(): BelongsTo
     {
         return $this->belongsTo(config('blog.models.post'), 'post_id', 'id');

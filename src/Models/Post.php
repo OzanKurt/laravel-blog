@@ -2,21 +2,24 @@
 
 namespace OzanKurt\Blog\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\HtmlString;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OzanKurt\Blog\Enums\PostType;
 use OzanKurt\Blog\Enums\VideoType;
-use OzanKurt\Blog\Exceptions\InvalidVideoTypeException;
+use OzanKurt\Blog\Models\Traits\HasVideo;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
     use HasSlug;
     use HasVideo;
+
+    public function getTable(): string
+    {
+        return config('blog.database.table_prefix') . 'posts';
+    }
 
     protected function casts(): array
     {
@@ -27,7 +30,7 @@ class Post extends Model
         ];
     }
 
-    public function getSlugOptions() : SlugOptions
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')

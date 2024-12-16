@@ -12,6 +12,11 @@ class Category extends Model
 {
     use HasSlug;
 
+    public function getTable(): string
+    {
+        return config('blog.database.table_prefix') . 'categories';
+    }
+
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()
