@@ -83,28 +83,27 @@ class Post extends Model implements HasMedia
         $width = data_get($media, 'custom_properties.dimensions.width');
         $height = data_get($media, 'custom_properties.dimensions.height');
 
-        try {
-            // if the images width/height is wider than 16/9
-            if ($width / $height < 16 / 9) {
-                // resize to 320x180 and crop the image to 16/9 from center
-                $newHeight = 320 / ($width / $height);
-                $this->addMediaConversion('thumb')
-                    ->resize(320, $newHeight, [
-                        Constraint::PreserveAspectRatio,
-                        Constraint::DoNotUpsize,
-                    ])
-                    ->crop(320, 180, CropPosition::Center)
-                    ->performOnCollections('image')
-                    ->nonQueued();
-            } else {
-//                dd($media?->custom_properties['background']);
-                $this->addMediaConversion('thumb')
-                    ->fit(Fit::Fill, 320, 180, false, $media?->custom_properties['background'])
-                    ->performOnCollections('image')
-                    ->nonQueued();
-            }
-        } catch (\Throwable $e) {
-            dd($media, $media->custom_properties, $media->custom_properties['dimensions'], $media->custom_properties['dimensions']['height']);
+        if (!$width || !$height) {
+            return;
+        }
+
+        // if the images width/height is wider than 16/9
+        if ($width / $height < 16 / 9) {
+            // resize to 320x180 and crop the image to 16/9 from center
+            $newHeight = 320 / ($width / $height);
+            $this->addMediaConversion('thumb')
+                ->resize(320, $newHeight, [
+                    Constraint::PreserveAspectRatio,
+                    Constraint::DoNotUpsize,
+                ])
+                ->crop(320, 180, CropPosition::Center)
+                ->performOnCollections('image')
+                ->nonQueued();
+        } else {
+            $this->addMediaConversion('thumb')
+                ->fit(Fit::Fill, 320, 180, false, $media?->custom_properties['background'])
+                ->performOnCollections('image')
+                ->nonQueued();
         }
     }
 }
