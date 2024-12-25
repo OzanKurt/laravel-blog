@@ -4,7 +4,8 @@ namespace OzanKurt\Blog\Enums;
 
 enum PostType: int
 {
-    case YOUTUBE = 1;
-    case VIMEO = 2;
-    case DAILYMOTION = 3;
+    case TEXT = 1;
+    case IMAGE = 2;
+    case CAROUSEL = 3;
+    case VIDEO = 4;
 }

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
+    protected $guarded = ['id'];
+
     public function getTable(): string
     {
         return config('blog.database.table_prefix') . 'comments';

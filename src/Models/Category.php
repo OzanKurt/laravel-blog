@@ -12,6 +12,8 @@ class Category extends Model
 {
     use HasSlug;
 
+    protected $guarded = ['id'];
+
     public function getTable(): string
     {
         return config('blog.database.table_prefix') . 'categories';

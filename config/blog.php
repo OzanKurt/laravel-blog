@@ -11,9 +11,9 @@ return [
         'user' => App\Models\User::class,
 
         /** If you want to use your own models, you can extend the package models. */
-        'category' => OzanKurt\Blog\Category::class,
-        'comment' => OzanKurt\Blog\Comment::class,
-        'post' => OzanKurt\Blog\Post::class,
+        'category' => OzanKurt\Blog\Models\Category::class,
+        'comment' => OzanKurt\Blog\Models\Comment::class,
+        'post' => OzanKurt\Blog\Models\Post::class,
     ],
 
     'media' => [
